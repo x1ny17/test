@@ -2,8 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>DeepSeek · 智能对话伴侣</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>沈砚 · 朋友圈</title>
     <style>
         * {
             margin: 0;
@@ -12,643 +12,715 @@
         }
 
         body {
-            background: #1a1c1e;
+            background: #e9ecef;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            padding: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            padding: 20px;
         }
 
-        /* 手机风格容器 */
-        .chat-app {
+        /* iPhone 15 Pro 风格容器 */
+        .phone {
+            max-width: 430px;
             width: 100%;
-            max-width: 500px;
+            background: #ffffff;
+            border-radius: 44px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
             height: 780px;
-            background: #0e0f11;
-            border-radius: 32px;
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), 0 0 0 6px #2c2e31;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
             position: relative;
         }
 
-        /* 状态栏 + 头部 */
-        .status-bar {
-            background: #0e0f11;
-            padding: 12px 20px 6px 20px;
+        /* 动态岛区域 */
+        .dynamic-island {
+            background: #111;
+            height: 44px;
+            border-radius: 35px;
+            margin: 12px 16px 0;
             display: flex;
             justify-content: space-between;
-            font-size: 14px;
-            font-weight: 590;
-            color: #e8edf2;
-            font-family: monospace;
-        }
-
-        .chat-header {
-            background: #0e0f11;
-            padding: 8px 16px 12px;
-            border-bottom: 0.5px solid #2c2f33;
-            display: flex;
             align-items: center;
-            gap: 12px;
+            padding: 0 20px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
         }
 
-        .back-arrow {
-            font-size: 28px;
-            color: #2e7dff;
-            font-weight: 400;
-            line-height: 1;
+        .time {
+            letter-spacing: 0.5px;
+        }
+
+        .status-icons {
+            display: flex;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        /* 导航栏 */
+        .nav-bar {
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 0.5px solid #e9ecef;
+            background: white;
+        }
+
+        .back-btn {
+            font-size: 24px;
             cursor: default;
+            color: #007aff;
+            font-weight: 400;
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .menu-btn {
+            font-size: 22px;
+            cursor: default;
+            color: #007aff;
+        }
+
+        /* 可滚动朋友圈内容 */
+        .moments-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 0;
+            scrollbar-width: thin;
+        }
+
+        /* 朋友圈卡片 */
+        .moment-card {
+            background: white;
+            margin-bottom: 10px;
+            padding: 14px 16px;
+            border-bottom: 0.5px solid #eff0f2;
+            transition: all 0.1s;
+        }
+
+        .moment-header {
+            display: flex;
+            gap: 12px;
         }
 
         .avatar {
             width: 44px;
             height: 44px;
-            background: linear-gradient(145deg, #1f3b4c, #0f2a38);
+            background: linear-gradient(145deg, #2c3e50, #1a2632);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
-            font-weight: 600;
-            color: #d6eaff;
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
-        .header-info {
+        .moment-content {
             flex: 1;
         }
 
-        .header-name {
-            font-size: 17px;
-            font-weight: 620;
-            color: #ffffff;
-            letter-spacing: -0.3px;
+        .name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #000000;
+            margin-bottom: 6px;
         }
 
-        .header-status {
-            font-size: 12px;
-            color: #2e7dff;
-            margin-top: 2px;
+        .text-content {
+            font-size: 15px;
+            line-height: 1.43;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+        }
+
+        .text-content a {
+            color: #007aff;
+            text-decoration: none;
+        }
+
+        .img-grid {
+            display: flex;
+            gap: 4px;
+            margin: 10px 0 8px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .single-img {
+            width: 100%;
+            max-height: 280px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .time-reply {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .time {
+            font-size: 11px;
+            color: #8e8e93;
+        }
+
+        .reply-icon {
+            font-size: 13px;
+            color: #8e8e93;
+        }
+
+        /* 评论区风格 */
+        .comments-section {
+            background: #f8f9fc;
+            border-radius: 12px;
+            margin-top: 10px;
+            padding: 8px 12px;
+        }
+
+        .comment-item {
+            font-size: 13px;
+            line-height: 1.45;
+            margin-bottom: 8px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .comment-name {
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-right: 6px;
+        }
+
+        .reply-to {
+            color: #8e8e93;
+            margin-right: 6px;
+        }
+
+        .comment-text {
+            color: #2c2c2e;
+            flex: 1;
+        }
+
+        .like-section {
             display: flex;
             align-items: center;
             gap: 4px;
+            margin-top: 8px;
+            flex-wrap: wrap;
         }
 
-        .online-dot {
-            width: 8px;
-            height: 8px;
-            background: #35d16b;
-            border-radius: 50%;
-            display: inline-block;
+        .like-icon {
+            color: #ff3b30;
+            font-size: 16px;
         }
 
-        .menu-icon {
-            font-size: 22px;
-            color: #2e7dff;
+        .like-users {
+            font-size: 13px;
+            color: #2c2c2e;
         }
 
-        /* 聊天区域 */
-        .chat-area {
-            flex: 1;
-            overflow-y: auto;
-            padding: 18px 14px 16px 14px;
+        hr {
+            margin: 8px 0;
+            border: 0;
+            height: 0.5px;
+            background: #e9ecef;
+        }
+
+        .emoji {
+            font-size: 14px;
+        }
+
+        /* 底部栏 */
+        .bottom-bar {
+            border-top: 0.5px solid #e9ecef;
+            padding: 10px 20px;
+            background: white;
             display: flex;
-            flex-direction: column;
-            gap: 14px;
-            background: #0e0f11;
-        }
-
-        /* 消息行 */
-        .message-row {
-            display: flex;
-            width: 100%;
-            animation: fadeInUp 0.2s ease-out;
-        }
-
-        .message-left {
-            justify-content: flex-start;
-        }
-
-        .message-right {
-            justify-content: flex-end;
-        }
-
-        /* 气泡 */
-        .bubble {
-            max-width: 78%;
-            padding: 10px 15px;
-            border-radius: 22px;
-            font-size: 15px;
-            line-height: 1.45;
-            word-wrap: break-word;
-            position: relative;
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-        }
-
-        .bubble-left {
-            background: #1f2c38;
-            color: #eef3fc;
-            border-bottom-left-radius: 5px;
-        }
-
-        .bubble-right {
-            background: #2e7dff;
-            color: white;
-            border-bottom-right-radius: 5px;
-        }
-
-        /* 元信息（时间/已读） */
-        .meta {
-            font-size: 10px;
-            color: #5c6f7e;
-            margin-top: 4px;
-            margin-left: 12px;
-            margin-right: 12px;
-            display: flex;
-            gap: 6px;
-        }
-
-        .message-right .meta {
-            justify-content: flex-end;
-        }
-
-        /* 打字指示器 */
-        .typing-indicator {
-            background: #1f2c38;
-            border-radius: 20px;
-            padding: 10px 16px;
-            width: fit-content;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: #8faec9;
-            border-radius: 50%;
-            animation: typingBounce 1.3s infinite ease-in-out;
-        }
-
-        .typing-dot:nth-child(1) { animation-delay: 0s; }
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes typingBounce {
-            0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
-            30% { transform: translateY(-6px); opacity: 1; }
-        }
-
-        /* 设置面板 */
-        .settings-panel {
-            background: #14171c;
-            margin: 4px 12px 8px 12px;
-            border-radius: 28px;
-            padding: 10px 16px;
-            display: flex;
-            align-items: center;
             justify-content: space-between;
-            gap: 10px;
-            border: 0.5px solid #2c2f36;
-        }
-
-        .api-input {
-            flex: 1;
-            background: #1e242b;
-            border: none;
-            border-radius: 40px;
-            padding: 8px 14px;
-            font-size: 12px;
-            color: #cbdae9;
-            outline: none;
-            font-family: monospace;
-        }
-
-        .api-input::placeholder {
-            color: #5e727f;
-        }
-
-        .save-btn {
-            background: #2e7dff;
-            border: none;
-            border-radius: 30px;
-            padding: 6px 16px;
-            color: white;
-            font-weight: 600;
-            font-size: 12px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .save-btn:active {
-            background: #1b5fcc;
-            transform: scale(0.96);
-        }
-
-        .status-badge {
-            font-size: 10px;
-            background: #1e2f3c;
-            padding: 4px 8px;
-            border-radius: 40px;
-            color: #88bbdd;
-        }
-
-        /* 输入区域 */
-        .input-wrapper {
-            background: #0e0f11;
-            padding: 10px 16px 16px 16px;
-            border-top: 0.5px solid #262a2f;
-        }
-
-        .input-bar {
-            background: #1b2026;
-            border-radius: 32px;
-            display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 4px 6px 4px 18px;
+            font-size: 24px;
+            color: #007aff;
         }
 
-        .input-field {
-            flex: 1;
-            background: transparent;
-            border: none;
-            padding: 12px 0;
-            font-size: 15px;
-            color: #f0f3f8;
-            outline: none;
-            font-family: inherit;
-        }
-
-        .input-field:disabled {
-            opacity: 0.5;
-        }
-
-        .send-btn {
-            background: #2e7dff;
-            border: none;
-            width: 42px;
-            height: 42px;
-            border-radius: 30px;
-            color: white;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .send-btn:active {
-            transform: scale(0.94);
-            background: #1f64d9;
-        }
-
-        .send-btn.disabled {
-            opacity: 0.5;
-            pointer-events: none;
-        }
-
-        .footer-note {
-            text-align: center;
-            font-size: 9px;
-            color: #3e4d5a;
-            padding: 6px 0 8px;
-            background: #0e0f11;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .scroll-style::-webkit-scrollbar {
+        /* 自定义滚动条 */
+        .moments-container::-webkit-scrollbar {
             width: 4px;
         }
-        .scroll-style::-webkit-scrollbar-track {
-            background: #191e22;
+        .moments-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
         }
-        .scroll-style::-webkit-scrollbar-thumb {
-            background: #3e5568;
+        .moments-container::-webkit-scrollbar-thumb {
+            background: #c7c7cc;
             border-radius: 10px;
         }
     </style>
 </head>
 <body>
-<div class="chat-app">
-    <div class="status-bar">
-        <span>9:41</span>
-        <span>📶 🔋 100%</span>
+<div class="phone">
+    <div class="dynamic-island">
+        <span class="time">9:41</span>
+        <span class="status-icons">📶 🔋 100%</span>
     </div>
-    <div class="chat-header">
-        <span class="back-arrow">←</span>
-        <div class="avatar">DS</div>
-        <div class="header-info">
-            <div class="header-name">DeepSeek · 智能助手</div>
-            <div class="header-status"><span class="online-dot"></span> 在线 · 深度思考</div>
-        </div>
-        <span class="menu-icon">⋯</span>
+    <div class="nav-bar">
+        <span class="back-btn">←</span>
+        <span class="title">朋友圈</span>
+        <span class="menu-btn">•••</span>
     </div>
 
-    <!-- 简易 API 配置栏 -->
-    <div class="settings-panel">
-        <input type="text" id="apiKeyInput" class="api-input" placeholder="DeepSeek API Key (sk-...)" value="">
-        <button id="saveApiBtn" class="save-btn">保存密钥</button>
-        <span id="apiStatus" class="status-badge">⚙️ 未配置</span>
-    </div>
-
-    <!-- 聊天记录区 -->
-    <div class="chat-area scroll-style" id="chatArea">
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">
-                ✨ 你好呀！我是 DeepSeek，你的智能对话伙伴。<br>
-                请在上方输入你的 API Key（可从 platform.deepseek.com 获取），之后就可以畅快聊天啦～
+    <div class="moments-container">
+        <!-- 沈砚的朋友圈条目 1 -->
+        <div class="moment-card">
+            <div class="moment-header">
+                <div class="avatar">沈</div>
+                <div class="moment-content">
+                    <div class="name">沈砚</div>
+                    <div class="text-content">
+                        宝宝去三亚玩了一周，走之前信誓旦旦说会想我。<br>
+                        结果第一天：😍🌊🦀<br>
+                        第二天：🏝️👙🍹<br>
+                        第三天：😎📸👭<br>
+                        第四天：🙃 —————> 凌晨1:23 给我发消息：“哥哥你睡了吗？海浪声好大我睡不着。”（其实是没我的怀抱不适应吧）<br>
+                        第五天开始天天视频挂到天亮，第六天提前改签回来了。<br>
+                        抱着我的领带睡了一路。<br>
+                        下次出差或者旅行，我看还是一起吧。省得某只小猫天天钻我被窝偷睡衣。
+                    </div>
+                    <div class="img-grid">
+                        <img class="single-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 280'%3E%3Crect width='400' height='280' fill='%23b2d8e6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23366b7a' font-size='14'%3E🐱 偷领带的小证据%3C/text%3E%3C/svg%3E" alt="moment pic">
+                    </div>
+                    <div class="time-reply">
+                        <span class="time">昨天 21:15</span>
+                        <span class="reply-icon">💬 42</span>
+                    </div>
+                    <!-- 评论区 -->
+                    <div class="comments-section">
+                        <div class="comment-item">
+                            <span class="comment-name">苏念</span>
+                            <span class="comment-text">沈总你真的很夸张，念晞在三亚每天都念叨“哥哥说不准吃冰、哥哥让我擦防晒”，我都快会背了！😏</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">沈砚</span>
+                            <span class="comment-text">回复 @苏念 ：她听话就行。冰淇淋只让吃了一勺，防晒倒是涂得挺勤。你少带她熬夜逛夜市。</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">苏念</span>
+                            <span class="comment-text">回复 @沈砚 ：……救命，念晞你看你家这位！！！管天管地管闺蜜😭</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">金念晞</span>
+                            <span class="comment-text">回复 @苏念 ：👉👈 哥哥……其实我偷偷吃了一口芒果沙冰……</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">沈砚</span>
+                            <span class="comment-text">回复 @金念晞 ：金念晞，站过来。🥶</span>
+                        </div>
+                        <div class="like-section">
+                            <span class="like-icon">❤️</span>
+                            <span class="like-users">金念晞、苏念、陆景琛、林知意、陈淮序、赵以衡 等 28人</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">
-                💡 提示：API Key 仅存储在本会话中，不会上传到任何服务器。
+
+        <!-- 沈砚的朋友圈2 — 关于“变成猫”那天的纪念（人设克制但暗戳戳） -->
+        <div class="moment-card">
+            <div class="moment-header">
+                <div class="avatar">沈</div>
+                <div class="moment-content">
+                    <div class="name">沈砚</div>
+                    <div class="text-content">
+                        某些人变成一坨汤圆大的白猫，还要指挥我剥虾。👉 @金念晞<br>
+                        要点：虾线要去掉，不能太咸，要晾到温热再递过去。<br>
+                        且全程不能用“咪”糊弄，必须喵三声才给一只。<br>
+                        结果最后还不是心软，全剥了。<br>
+                        很好，下次别变了，心脏受不了。
+                    </div>
+                    <div class="img-grid">
+                        <img class="single-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 280'%3E%3Crect width='400' height='280' fill='%23efdbca'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%238c6e4e' font-size='14'%3E🐈 白猫·限量版金念晞%3C/text%3E%3C/svg%3E" alt="cat moment">
+                    </div>
+                    <div class="time-reply">
+                        <span class="time">昨天 12:04</span>
+                        <span class="reply-icon">💬 68</span>
+                    </div>
+                    <div class="comments-section">
+                        <div class="comment-item">
+                            <span class="comment-name">金念晞</span>
+                            <span class="comment-text">哥哥你怎么把这种事情发出来了！！！🥺 社死了社死了！但我变成猫也很乖对不对！</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">沈砚</span>
+                            <span class="comment-text">回复 @金念晞 ：嗯，很乖。把鼻涕蹭我手上那笔账还没算。</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">陆景琛</span>
+                            <span class="comment-text">沈哥，最近沈氏转型宠物用品了？怎么还亲自养猫哈哈哈哈，这只猫看着就很贵气，什么品种？</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">沈砚</span>
+                            <span class="comment-text">回复 @陆景琛 ：💢 不是猫，是金念晞。再问收购你们公司。</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">顾西辞</span>
+                            <span class="comment-text">我在乎的是猫吗，我在乎的是沈砚居然会亲手剥虾还发朋友圈。爷青回。</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">林知意</span>
+                            <span class="comment-text">呜呜呜呜好甜！念晞下次变成小猫给我ruarua！！！</span>
+                        </div>
+                        <div class="like-section">
+                            <span class="like-icon">❤️</span>
+                            <span class="like-users">金念晞、苏念、陆景琛、顾西辞、周起淮、姜辞忧 等 39人</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- 底部输入区 -->
-    <div class="input-wrapper">
-        <div class="input-bar">
-            <input type="text" id="messageInput" class="input-field" placeholder="给 DeepSeek 发消息..." autocomplete="off">
-            <button id="sendBtn" class="send-btn">➤</button>
+        <!-- 沈砚3 — 关于裙子和三亚的前后暗涌（暗搓搓占有欲） -->
+        <div class="moment-card">
+            <div class="moment-header">
+                <div class="avatar">沈</div>
+                <div class="moment-content">
+                    <div class="name">沈砚</div>
+                    <div class="text-content">
+                        买了一条很短的吊带裙要去海边，找我批准。我说“行”。<br>
+                        然后她不知道的是：我把她从酒店到沙滩3公里内的安保、私人海滩预约、防晒医疗队全部安排完了。<br>
+                        以及，最后这条裙子只有我看过穿上的样子。😌<br>
+                        （到三亚当晚她就穿给我看了，然后我俩窝在酒店套房里看了两小时海景——好吧可能不止看海）
+                    </div>
+                    <div class="time-reply">
+                        <span class="time">2天前 20:30</span>
+                        <span class="reply-icon">💬 95</span>
+                    </div>
+                    <div class="comments-section">
+                        <div class="comment-item">
+                            <span class="comment-name">苏念</span>
+                            <span class="comment-text">好家伙，我说怎么那几天蜈支洲岛人那么少，连私人沙滩都对我们免费开放……原来！沈总大手笔！！！念晞你知道吗！！</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">金念晞</span>
+                            <span class="comment-text">？？？哥哥你什么时候包的？？？我说怎么整个酒店突然安静得只有我俩那层楼有人！！😳</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">沈砚</span>
+                            <span class="comment-text">回复 @金念晞 ：你买裙子那天。乖，不影响你的“自力更生”，我保证没让你实习公司知道。</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">姜辞忧</span>
+                            <span class="comment-text">这位沈总：恋爱脑晚期，且病入膏肓。建议送三亚隔离，旁边放一位金念晞即可治愈。</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">沈砚</span>
+                            <span class="comment-text">回复 @姜辞忧 ：你有意见？@周起淮 管管你家的。</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">周起淮</span>
+                            <span class="comment-text">😂对不起沈总，我家这位我管不住。不过你订整个酒店这招确实够狠，以后我学着点。</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">陆景琛</span>
+                            <span class="comment-text">你们这些人谈恋爱太卷了，我选择退网。</span>
+                        </div>
+                        <div class="like-section">
+                            <span class="like-icon">❤️</span>
+                            <span class="like-users">金念晞、周起淮、苏念、姜辞忧、顾西辞、林知意、赵以衡 等 52人</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="footer-note">由 DeepSeek API 驱动 · 真实对话</div>
-    </div>
-</div>
 
-<script>
-    // ---------- DOM 元素 ----------
-    const chatArea = document.getElementById('chatArea');
-    const messageInput = document.getElementById('messageInput');
-    const sendBtn = document.getElementById('sendBtn');
-    const apiKeyInput = document.getElementById('apiKeyInput');
-    const saveApiBtn = document.getElementById('saveApiBtn');
-    const apiStatusSpan = document.getElementById('apiStatus');
+        <!-- 沈砚4 — 机场接机的后续，暗戳戳秀归来日常 -->
+        <div class="moment-card">
+            <div class="moment-header">
+                <div class="avatar">沈</div>
+                <div class="moment-content">
+                    <div class="name">沈砚</div>
+                    <div class="text-content">
+                        接机的时候某只小东西扑过来，行李箱撞到我小腿都不管。挂在我身上二十分钟不下来，司机只好去逛航站楼。<br>
+                        回到家洗完澡穿着我的家居衫，怀里抱着我的领带，睡得跟小猪一样。<br>
+                        但是半夜发烧了，估计是旅途太累＋三亚空调太冷。🤒<br>
+                        量体温、喂药、物理降温到凌晨四点，好在早上退烧了。<br>
+                        然后第一句话是：“哥哥你黑眼圈好重，是不是又没睡觉。”<br>
+                        你说呢？金小猪。
+                    </div>
+                    <div class="img-grid">
+                        <img class="single-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 280'%3E%3Crect width='400' height='280' fill='%23ffefd5'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23b97f44' font-size='14'%3E🌡️ 凌晨四点的体温计%3C/text%3E%3C/svg%3E" alt="fever pic">
+                    </div>
+                    <div class="time-reply">
+                        <span class="time">2天前 09:47</span>
+                        <span class="reply-icon">💬 113</span>
+                    </div>
+                    <div class="comments-section">
+                        <div class="comment-item">
+                            <span class="comment-name">苏念</span>
+                            <span class="comment-text">😭你们真的是……我哭死。所以念晞只是累的加上飞机上冷气太足了，我们回来时候她不舒服还一直撑着不告诉我，只说要“快点回家见哥哥”</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">沈砚</span>
+                            <span class="comment-text">回复 @苏念 ：以后有这种情况直接打我电话，别让她硬撑。谢谢。</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">金念晞</span>
+                            <span class="comment-text">QAQ 我错了嘛…下次不会了……你守了我一晚上，我可心疼了。今晚我来做饭！</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">沈砚</span>
+                            <span class="comment-text">回复 @金念晞 ：你做饭？上次差点把厨房点了。老实待着，让张姐来。</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">金念晞</span>
+                            <span class="comment-text">回复 @沈砚 ：🥺 哥哥给我点面子，这里是朋友圈！</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">沈砚</span>
+                            <span class="comment-text">回复 @金念晞 ：好，给你面子。她很会做饭，只是需要我在旁边盯着锅。</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">林知意</span>
+                            <span class="comment-text">笑死，沈总亲自下场护妻又拆台，我磕到了谢谢。</span>
+                        </div>
+                        <div class="like-section">
+                            <span class="like-icon">❤️ 89</span>
+                            <span class="like-users">金念晞、苏念、顾西辞、周起淮、陆景琛、赵以衡 等 89人</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    // ---------- 状态 ----------
-    let API_KEY = localStorage.getItem('deepseek_api_key') || '';
-    let isWaitingReply = false;      // 防止重复发送
-    let currentAssistantMessageDiv = null;  // 用于流式更新（本次使用普通模式，简化但保留结构）
-    
-    // 初始化加载本地存储的key
-    if (API_KEY) {
-        apiKeyInput.value = API_KEY;
-        updateApiStatus(true);
-    } else {
-        updateApiStatus(false);
-    }
+        <!-- 沈砚5 — 关于转账日常，暗含无边宠溺 -->
+        <div class="moment-card">
+            <div class="moment-header">
+                <div class="avatar">沈</div>
+                <div class="moment-content">
+                    <div class="name">沈砚</div>
+                    <div class="text-content">
+                        某人最近实习工资还没发，昨天偷偷看中一个包包，对着手机叹了三口气。🙄<br>
+                        我转了六位数过去，备注“买包”，秒收。<br>
+                        然后回了一句：“哥哥，其实我可以等实习工资的。”<br>
+                        又转了一笔，“买奶茶”。收得更快。<br>
+                        金念晞，你什么德行我不知道？零花钱永远不嫌多，但又永远舍不得给自己花，全给我存着买生日礼物。<br>
+                        花我的钱，别心疼。我的心和卡都是你的。
+                    </div>
+                    <div class="time-reply">
+                        <span class="time">4天前 15:23</span>
+                        <span class="reply-icon">💬 128</span>
+                    </div>
+                    <div class="comments-section">
+                        <div class="comment-item">
+                            <span class="comment-name">金念晞</span>
+                            <span class="comment-text">😳 哥哥你怎么连我叹了几口气都知道！？那天你在书房开会啊！</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">沈砚</span>
+                            <span class="comment-text">回复 @金念晞 ：我在隔壁开视频会议，但没有关掉你房间的监控画面。 😑</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">金念晞</span>
+                            <span class="comment-text">回复 @沈砚 ：这就是你在家装八个摄像头的理由！🥲</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">苏念</span>
+                            <span class="comment-text">笑不活了 沈总的宠妻方式：安装家庭监控系统，时时关注女友叹气次数并转账。</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">陆景琛</span>
+                            <span class="comment-text">沈哥，有没有一种可能是人家实习工资也有五位数？你转账零头都比包包贵出天际。</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">沈砚</span>
+                            <span class="comment-text">回复 @陆景琛 ：她实习工资是她努力的结果。我的钱，是我想给她的底气。冲突？</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">顾西辞</span>
+                            <span class="comment-text">“我的心和卡都是你的。” ———— 好家伙，沈氏集团随时更名金山银山恋爱集团。</span>
+                        </div>
+                        <div class="like-section">
+                            <span class="like-icon">❤️</span>
+                            <span class="like-users">金念晞、苏念、姜辞忧、林知意、周起淮 等 73人</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    // 更新API状态显示
-    function updateApiStatus(isValid) {
-        if (isValid && API_KEY && API_KEY.startsWith('sk-')) {
-            apiStatusSpan.innerHTML = '✅ API 已就绪';
-            apiStatusSpan.style.color = '#8bcb8c';
-        } else if (API_KEY && !API_KEY.startsWith('sk-')) {
-            apiStatusSpan.innerHTML = '⚠️ 格式错误 (需sk-)';
-            apiStatusSpan.style.color = '#f9b43a';
-        } else {
-            apiStatusSpan.innerHTML = '🔑 未配置密钥';
-            apiStatusSpan.style.color = '#aaabb8';
-        }
-    }
+        <!-- 沈砚6 — 关于金念晞的胃和健康问题，严肃又宠溺的警告 -->
+        <div class="moment-card">
+            <div class="moment-header">
+                <div class="avatar">沈</div>
+                <div class="moment-content">
+                    <div class="name">沈砚</div>
+                    <div class="text-content">
+                        说一件严肃的事。@金念晞 的肠胃不好，不能凉不能热，经常胃疼还硬扛。<br>
+                        上周半夜胃痉挛，疼得蜷成虾米也不叫我，自己偷偷百度“胃疼怎么缓解”。<br>
+                        我特么……血压拉满。<br>
+                        以后家里的冰箱我会上指纹锁，凉水、冰激凌、冰饮料你打不开。想吃找我，我酌情批准。<br>
+                        还有，再让我发现你不按时吃药、胃疼不说，你就等着24小时黏在我身边，我去公司你也跟着，我看你还能不能硬撑。
+                    </div>
+                    <div class="img-grid">
+                        <img class="single-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 280'%3E%3Crect width='400' height='280' fill='%23f4e4d4'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23993c2e' font-size='16'%3E🤒 胃药+体温计+草莓味咀嚼片%3C/text%3E%3C/svg%3E" alt="medicine">
+                    </div>
+                    <div class="time-reply">
+                        <span class="time">2026-05-05 22:18</span>
+                        <span class="reply-icon">💬 88</span>
+                    </div>
+                    <div class="comments-section">
+                        <div class="comment-item">
+                            <span class="comment-name">金念晞</span>
+                            <span class="comment-text">………我知道错了哥哥，你别锁冰箱，我以后不乱吃凉的😭 真的会按时吃药的！</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">沈砚</span>
+                            <span class="comment-text">回复 @金念晞 ：上次也是这么说的。你的“认错”和“改错”之间差了一个银河系。这次听我的。</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">苏念</span>
+                            <span class="comment-text">念晞你确实该注意了，上次在学校胃疼还跑800米，我当时就该给你家沈总打小报告！</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">沈砚</span>
+                            <span class="comment-text">回复 @苏念 ：这种事以后立刻告诉我。你学业上的事我帮你安排。</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">姜辞忧</span>
+                            <span class="comment-text">指纹锁冰箱哈哈哈哈哈哈学到了，沈总这波管控精准到位。</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">顾西辞</span>
+                            <span class="comment-text">念晞：颤抖吧，以后吃冰淇淋要找沈总刷卡——不是，刷指纹。</span>
+                        </div>
+                        <div class="like-section">
+                            <span class="like-icon">❤️</span>
+                            <span class="like-users">金念晞、苏念、周起淮、林知意、赵以衡 等 61人</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    // 保存 API Key
-    saveApiBtn.addEventListener('click', () => {
-        let newKey = apiKeyInput.value.trim();
-        if (newKey === '') {
-            localStorage.removeItem('deepseek_api_key');
-            API_KEY = '';
-            updateApiStatus(false);
-            appendSystemMessage('❌ 已清除 API Key，如需对话请重新配置～', 'left');
-            return;
-        }
-        if (!newKey.startsWith('sk-')) {
-            appendSystemMessage('⚠️ API Key 格式似乎不正确，应该以 "sk-" 开头，请检查后重试。', 'left');
-            apiStatusSpan.innerHTML = '⚠️ 无效Key';
-            return;
-        }
-        API_KEY = newKey;
-        localStorage.setItem('deepseek_api_key', API_KEY);
-        updateApiStatus(true);
-        appendSystemMessage('✅ API Key 已保存！现在可以尽情聊天啦～', 'left');
-    });
+        <!-- 沈砚7 — 关于性瘾和被某人撩拨，含蓄又暗涌十足 -->
+        <div class="moment-card">
+            <div class="moment-header">
+                <div class="avatar">沈</div>
+                <div class="moment-content">
+                    <div class="name">沈砚</div>
+                    <div class="text-content">
+                        今天是金念晞生理期第一天。意味着我要禁欲五天。<br>
+                        但她偏要穿我的白衬衫晃来晃去，还要凑过来问我“哥哥你是不是忍得很辛苦”。<br>
+                        金念晞，你是真的不懂还是假装不懂？<br>
+                        等这几天过去，你别想下床。🛏️<br>
+                        P.s. 红糖姜茶我煮好了，放桌上了。乖，喝完去睡觉。
+                    </div>
+                    <div class="time-reply">
+                        <span class="time">2026-05-03 21:05</span>
+                        <span class="reply-icon">💬 108</span>
+                    </div>
+                    <div class="comments-section">
+                        <div class="comment-item">
+                            <span class="comment-name">金念晞</span>
+                            <span class="comment-text">🥺 哥哥我错了，但我真的是单纯觉得你衣服大穿着舒服嘛… 不是故意撩你…（小声）</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">沈砚</span>
+                            <span class="comment-text">回复 @金念晞 ：你穿我衣服没有错。但你窝在我腿上，一边喝红糖水一边用那种眼神瞄我，这叫“单纯”？</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">苏念</span>
+                            <span class="comment-text">啊啊啊啊啊我不想看到这个朋友圈！单身狗也是狗！请停止虐狗！</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">陆景琛</span>
+                            <span class="comment-text">沈哥，第一次见把“禁欲五天”写在朋友圈的。respect your courage.</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">姜辞忧</span>
+                            <span class="comment-text">红糖姜茶好评，但最后那句话信息量太大了沈总。</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">周起淮</span>
+                            <span class="comment-text">你俩的朋友圈，我每次都告诉自己别看，但每次手贱。</span>
+                        </div>
+                        <div class="like-section">
+                            <span class="like-icon">❤️</span>
+                            <span class="like-users">金念晞、苏念、姜辞忧、顾西辞、周起淮、赵以衡 等 67人</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    // 追加系统/普通消息 (text, 方向 left/right)
-    function appendMessage(text, sender) {
-        const isUser = (sender === 'right');
-        const messageRow = document.createElement('div');
-        messageRow.className = `message-row ${isUser ? 'message-right' : 'message-left'}`;
-        const bubble = document.createElement('div');
-        bubble.className = `bubble ${isUser ? 'bubble-right' : 'bubble-left'}`;
-        bubble.innerText = text;
-        messageRow.appendChild(bubble);
-        
-        const metaDiv = document.createElement('div');
-        metaDiv.className = 'meta';
-        const now = new Date();
-        const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
-        metaDiv.innerText = isUser ? `${timeStr} 已读` : `${timeStr}`;
-        messageRow.appendChild(metaDiv);
-        
-        chatArea.appendChild(messageRow);
-        scrollToBottom();
-        return messageRow;
-    }
+        <!-- 沈砚8 — 简单一条秀恩爱，关于出差日常视频通话 -->
+        <div class="moment-card">
+            <div class="moment-header">
+                <div class="avatar">沈</div>
+                <div class="moment-content">
+                    <div class="name">沈砚</div>
+                    <div class="text-content">
+                        出差墨尔本，半夜三点视频查岗某人有没有乖乖睡觉。<br>
+                        结果她窝在被窝里，抱着我的枕头，手机屏幕贴在脸上，迷迷糊糊说：“哥哥你什么时候回来… 枕头没有你暖…”<br>
+                        第二天改签机票，提前两天回家。<br>
+                        损失并购谈判预演时间，多花了400万安排远程会议。<br>
+                        值。
+                    </div>
+                    <div class="time-reply">
+                        <span class="time">2026-04-28 13:46</span>
+                        <span class="reply-icon">💬 103</span>
+                    </div>
+                    <div class="comments-section">
+                        <div class="comment-item">
+                            <span class="comment-name">金念晞</span>
+                            <span class="comment-text">😭你为什么不告诉我改签多花了那么多钱！就因为我一句梦话！</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">沈砚</span>
+                            <span class="comment-text">回复 @金念晞 ：因为那是真话，不是梦话。钱随时能赚，但你半夜撒娇的样子我只想立刻见到。</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">陆景琛</span>
+                            <span class="comment-text">400万就为了提前两天见女朋友？沈总，咱公司财报我看过，但这钱能不能拨给员工旅游。</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">沈砚</span>
+                            <span class="comment-text">回复 @陆景琛 ：可以，下个月团建预算翻倍。前提是你先找个女朋友，别来烦我。</span>
+                        </div>
+                        <div class="comment-item">
+                            <span class="comment-name">苏念</span>
+                            <span class="comment-text">念晞你老公疯了！！但好甜我顶不住了。</span>
+                        </div>
+                        <div class="like-section">
+                            <span class="like-icon">❤️</span>
+                            <span class="like-users">金念晞、苏念、姜辞忧、林知意、周起淮 等 79人</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    function appendSystemMessage(text, side = 'left') {
-        const messageRow = document.createElement('div');
-        messageRow.className = `message-row message-${side}`;
-        const bubble = document.createElement('div');
-        bubble.className = `bubble bubble-left`;
-        bubble.style.background = '#202b36';
-        bubble.style.color = '#cbdbe6';
-        bubble.innerText = text;
-        messageRow.appendChild(bubble);
-        const metaDiv = document.createElement('div');
-        metaDiv.className = 'meta';
-        const now = new Date();
-        metaDiv.innerText = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
-        messageRow.appendChild(metaDiv);
-        chatArea.appendChild(messageRow);
-        scrollToBottom();
-    }
-
-    // 显示“正在输入”占位符
-    let typingRow = null;
-    function showTypingIndicator() {
-        removeTypingIndicator();
-        typingRow = document.createElement('div');
-        typingRow.className = 'message-row message-left';
-        typingRow.id = 'typingIndicator';
-        const indicatorDiv = document.createElement('div');
-        indicatorDiv.className = 'typing-indicator';
-        for (let i = 0; i < 3; i++) {
-            const dot = document.createElement('div');
-            dot.className = 'typing-dot';
-            indicatorDiv.appendChild(dot);
-        }
-        typingRow.appendChild(indicatorDiv);
-        chatArea.appendChild(typingRow);
-        scrollToBottom();
-    }
-
-    function removeTypingIndicator() {
-        if (typingRow && typingRow.parentNode) {
-            typingRow.remove();
-            typingRow = null;
-        }
-    }
-
-    function scrollToBottom() {
-        chatArea.scrollTop = chatArea.scrollHeight;
-    }
-
-    // 核心：调用 DeepSeek API (非流式，简单可靠)
-    async function callDeepSeekAPI(userMessage) {
-        if (!API_KEY || !API_KEY.startsWith('sk-')) {
-            appendSystemMessage('🔑 请先配置有效的 DeepSeek API Key （点击上方“保存密钥”）', 'left');
-            return null;
-        }
-
-        // 构造对话上下文（可选简单记忆最近6条，更人性化）
-        // 我们只取最近几轮对话作为上下文，但为了简洁，直接发送当前消息+角色设定更符合“人设延续”
-        // 加载人设：根据沈砚&金念晞风格？但既然是指定DeepSeek通用智能，可塑造为温柔体贴又带点风趣的助手。
-        // 根据用户需求“deepseek来回答”，我们希望模型带有类似沈砚式男友力？或者保留通用助手的智慧。
-        // 为了让效果更佳，加入system prompt: 温柔知性，偶尔幽默，会关心人。
-        const systemPrompt = `你是一个温柔、聪明且拥有高情商的私人智能助手，名字叫DeepSeek。你喜欢用简洁又温暖的方式回答问题，有时候带一点点幽默感。你会关心对方的情绪，如果对方提到身体不舒服或者心情差，你会适当表达关心。你的对话风格是：友善、真诚、不啰嗦，偶尔用表情符号增加亲和力。`;
-        
-        const messages = [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: userMessage }
-        ];
-        
-        try {
-            const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${API_KEY}`
-                },
-                body: JSON.stringify({
-                    model: 'deepseek-chat',
-                    messages: messages,
-                    temperature: 0.7,
-                    max_tokens: 800,
-                    stream: false
-                })
-            });
-            
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                let errorMsg = `API 错误 ${response.status}`;
-                if (response.status === 401) errorMsg = 'API Key 无效或已过期，请检查密钥';
-                else if (response.status === 429) errorMsg = '请求频率过高，请稍后再试';
-                else if (errorData.error?.message) errorMsg = errorData.error.message;
-                throw new Error(errorMsg);
-            }
-            
-            const data = await response.json();
-            const reply = data.choices[0]?.message?.content;
-            if (!reply) throw new Error('返回内容为空');
-            return reply.trim();
-        } catch (err) {
-            console.error('DeepSeek API 调用失败:', err);
-            let friendlyMsg = `🤖 请求失败：${err.message}`;
-            if (err.message.includes('API Key')) friendlyMsg = `🔐 密钥验证失败，请检查 DeepSeek API Key 是否正确。`;
-            else if (err.message.includes('network')) friendlyMsg = `🌐 网络错误，请检查你的互联网连接。`;
-            appendSystemMessage(friendlyMsg, 'left');
-            return null;
-        }
-    }
-
-    // 发送消息主流程
-    async function sendMessage() {
-        if (isWaitingReply) {
-            appendSystemMessage('请稍等，我还在思考中……', 'left');
-            return;
-        }
-        const userText = messageInput.value.trim();
-        if (userText === '') return;
-        
-        // 未配置API拦截
-        if (!API_KEY || !API_KEY.startsWith('sk-')) {
-            appendSystemMessage('🔑 请先在上方输入有效的 DeepSeek API Key 并点击“保存密钥”后再聊天~', 'left');
-            return;
-        }
-        
-        // 显示用户消息
-        appendMessage(userText, 'right');
-        messageInput.value = '';
-        messageInput.focus();
-        
-        // 锁定发送按钮，展示思考指示器
-        isWaitingReply = true;
-        sendBtn.classList.add('disabled');
-        showTypingIndicator();
-        
-        // 调用API
-        const assistantReply = await callDeepSeekAPI(userText);
-        removeTypingIndicator();
-        
-        if (assistantReply) {
-            appendMessage(assistantReply, 'left');
-        } else {
-            // 错误提示已由 callDeepSeekAPI 内部 appendSystemMessage，无需额外动作
-            if (!chatArea.innerHTML.includes('调用失败')) {
-                // 防止重复提示
-            }
-        }
-        
-        isWaitingReply = false;
-        sendBtn.classList.remove('disabled');
-    }
-    
-    // 事件绑定
-    sendBtn.addEventListener('click', sendMessage);
-    messageInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendMessage();
-        }
-    });
-    
-    // 初次展示问候，若有apikey则提示准备就绪
-    if (API_KEY) {
-        setTimeout(() => {
-            appendSystemMessage(`✨ API Key 已加载完成，直接开始聊天吧！你可以问我任何问题～`, 'left');
-        }, 300);
-    } else {
-        setTimeout(() => {
-            appendSystemMessage(`📌 快速开始：1. 访问 https://platform.deepseek.com/ 注册并获取 API Key；2. 粘贴至上方输入框并保存。 之后就可以和我畅聊啦！`, 'left');
-        }, 200);
-    }
-    
-    // 额外样式优化滚动区域
-    chatArea.classList.add('scroll-style');
-    
-    // 增加本地记忆: 如果用户不小心点保存空值，友好反馈
-    window.addEventListener('load', () => {
-        // 没有任何额外操作
-        const style = document.createElement('style');
-        style.innerHTML = `.disabled { opacity: 0.5; pointer-events: none; }`;
-        document.head.appendChild(style);
-    });
-</script>
-</body>
-</html>
+        <!-- 再加一条：最近的一起在家胡闹，显示日常欢乐，对话超多（轻松幽默） -->
+        <div class="moment-card">
+            <div class="moment-header">
+                <div class="avatar">沈</div>
+                <div class="moment-content">
+                    <div class="name">沈砚</div>
+                    <div class="text-content">
+                        今天某人非要学做饭，说“要做一个贤惠的女朋友”。<br>
+　　                    结果：煎蛋糊了、稀饭漫出锅、盐放了三次。<br>
+　　                    还要嘴硬：“哥哥你背过去不许看！我要自己完成！”<br>
+　　                    最后我抱着她从背后握着手，一起翻了个蛋。<br>
+　　                    她宣布：“这是我俩爱情的煎蛋。”<br>
+　　                    然后偷偷把我那份糊的吃了，把好看的那份推给我。<br>
+　　                    金念晞，你是不是觉得我眼瞎？
+                    </div>
+                    <div class="img-grid">
+                        <img class="single-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 280'%3E%3Crect width='400' height='280' fill='%23ffe0b5'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23b6621a' font-size='14'%3E🍳 爱情煎蛋·糊版%3C/text
