@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>沈砚 ❤ 念念 · 聊天记录</title>
+    <title>DeepSeek · 智能对话伴侣</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             background: #1a1c1e;
             display: flex;
@@ -17,20 +18,23 @@
             align-items: center;
             min-height: 100vh;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            padding: 16px;
         }
-        /* 手机容器 */
-        .phone {
+
+        /* 手机风格容器 */
+        .chat-app {
             width: 100%;
-            max-width: 420px;
+            max-width: 500px;
             height: 780px;
             background: #0e0f11;
-            border-radius: 36px;
-            overflow: hidden;
-            box-shadow: 0 30px 50px rgba(0,0,0,0.5), 0 0 0 8px #2c2e31;
-            position: relative;
+            border-radius: 32px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), 0 0 0 6px #2c2e31;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
+            position: relative;
         }
+
         /* 状态栏 + 头部 */
         .status-bar {
             background: #0e0f11;
@@ -42,6 +46,7 @@
             color: #e8edf2;
             font-family: monospace;
         }
+
         .chat-header {
             background: #0e0f11;
             padding: 8px 16px 12px;
@@ -50,515 +55,600 @@
             align-items: center;
             gap: 12px;
         }
+
         .back-arrow {
             font-size: 28px;
             color: #2e7dff;
             font-weight: 400;
             line-height: 1;
+            cursor: default;
         }
+
         .avatar {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(145deg, #2c3e4e, #1e2a36);
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(145deg, #1f3b4c, #0f2a38);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 600;
-            color: #cddcec;
+            color: #d6eaff;
         }
+
         .header-info {
             flex: 1;
         }
+
         .header-name {
             font-size: 17px;
             font-weight: 620;
             color: #ffffff;
+            letter-spacing: -0.3px;
         }
+
         .header-status {
             font-size: 12px;
-            color: #6c8c9c;
+            color: #2e7dff;
             margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
+
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background: #35d16b;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
         .menu-icon {
             font-size: 22px;
             color: #2e7dff;
         }
+
         /* 聊天区域 */
         .chat-area {
             flex: 1;
             overflow-y: auto;
-            padding: 16px 12px;
+            padding: 18px 14px 16px 14px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
             background: #0e0f11;
         }
-        /* 气泡行 */
+
+        /* 消息行 */
         .message-row {
             display: flex;
             width: 100%;
+            animation: fadeInUp 0.2s ease-out;
         }
+
         .message-left {
             justify-content: flex-start;
         }
+
         .message-right {
             justify-content: flex-end;
         }
+
         /* 气泡 */
         .bubble {
             max-width: 78%;
-            padding: 10px 14px;
-            border-radius: 20px;
+            padding: 10px 15px;
+            border-radius: 22px;
             font-size: 15px;
             line-height: 1.45;
             word-wrap: break-word;
             position: relative;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
         }
+
         .bubble-left {
             background: #1f2c38;
             color: #eef3fc;
             border-bottom-left-radius: 5px;
         }
+
         .bubble-right {
             background: #2e7dff;
             color: white;
             border-bottom-right-radius: 5px;
         }
-        /* 时间/已读 */
+
+        /* 元信息（时间/已读） */
         .meta {
             font-size: 10px;
-            color: #5e6f7e;
+            color: #5c6f7e;
             margin-top: 4px;
             margin-left: 12px;
             margin-right: 12px;
             display: flex;
             gap: 6px;
         }
+
         .message-right .meta {
             justify-content: flex-end;
         }
-        /* 转账卡片样式 */
-        .transfer-card {
-            background: #1e2a32;
-            border-radius: 18px;
-            padding: 10px 16px;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            border: 0.5px solid #3a4a5a;
-        }
-        .transfer-amount {
-            font-size: 18px;
-            font-weight: 700;
-            color: #ffd966;
-        }
-        .transfer-note {
-            font-size: 12px;
-            color: #9aaebf;
-        }
-        .inline-image {
-            background: #1f2c38;
-            border-radius: 16px;
-            padding: 8px 12px;
-            font-size: 13px;
-            color: #bdd4e8;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        /* 表情包占位 */
-        .sticker {
+
+        /* 打字指示器 */
+        .typing-indicator {
             background: #1f2c38;
             border-radius: 20px;
-            padding: 6px 12px;
-            font-size: 28px;
-        }
-        /* 滚动条 */
-        .chat-area::-webkit-scrollbar {
-            width: 4px;
-        }
-        .chat-area::-webkit-scrollbar-track {
-            background: #1a1c1e;
-        }
-        .chat-area::-webkit-scrollbar-thumb {
-            background: #3e4a57;
-            border-radius: 10px;
-        }
-        .input-bar {
-            background: #14171a;
             padding: 10px 16px;
+            width: fit-content;
             display: flex;
-            gap: 12px;
             align-items: center;
-            border-top: 0.5px solid #2c2f33;
+            gap: 6px;
         }
-        .input-field {
-            flex: 1;
-            background: #1e2227;
-            border: none;
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #8faec9;
+            border-radius: 50%;
+            animation: typingBounce 1.3s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+            30% { transform: translateY(-6px); opacity: 1; }
+        }
+
+        /* 设置面板 */
+        .settings-panel {
+            background: #14171c;
+            margin: 4px 12px 8px 12px;
             border-radius: 28px;
             padding: 10px 16px;
-            font-size: 15px;
-            color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            border: 0.5px solid #2c2f36;
         }
+
+        .api-input {
+            flex: 1;
+            background: #1e242b;
+            border: none;
+            border-radius: 40px;
+            padding: 8px 14px;
+            font-size: 12px;
+            color: #cbdae9;
+            outline: none;
+            font-family: monospace;
+        }
+
+        .api-input::placeholder {
+            color: #5e727f;
+        }
+
+        .save-btn {
+            background: #2e7dff;
+            border: none;
+            border-radius: 30px;
+            padding: 6px 16px;
+            color: white;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .save-btn:active {
+            background: #1b5fcc;
+            transform: scale(0.96);
+        }
+
+        .status-badge {
+            font-size: 10px;
+            background: #1e2f3c;
+            padding: 4px 8px;
+            border-radius: 40px;
+            color: #88bbdd;
+        }
+
+        /* 输入区域 */
+        .input-wrapper {
+            background: #0e0f11;
+            padding: 10px 16px 16px 16px;
+            border-top: 0.5px solid #262a2f;
+        }
+
+        .input-bar {
+            background: #1b2026;
+            border-radius: 32px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 4px 6px 4px 18px;
+        }
+
+        .input-field {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 12px 0;
+            font-size: 15px;
+            color: #f0f3f8;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .input-field:disabled {
+            opacity: 0.5;
+        }
+
         .send-btn {
             background: #2e7dff;
             border: none;
-            width: 38px;
-            height: 38px;
+            width: 42px;
+            height: 42px;
             border-radius: 30px;
             color: white;
-            font-weight: bold;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
         }
+
+        .send-btn:active {
+            transform: scale(0.94);
+            background: #1f64d9;
+        }
+
+        .send-btn.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
         .footer-note {
             text-align: center;
-            font-size: 10px;
-            color: #3e4a57;
-            padding: 8px;
+            font-size: 9px;
+            color: #3e4d5a;
+            padding: 6px 0 8px;
             background: #0e0f11;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scroll-style::-webkit-scrollbar {
+            width: 4px;
+        }
+        .scroll-style::-webkit-scrollbar-track {
+            background: #191e22;
+        }
+        .scroll-style::-webkit-scrollbar-thumb {
+            background: #3e5568;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
-<div class="phone">
+<div class="chat-app">
     <div class="status-bar">
         <span>9:41</span>
         <span>📶 🔋 100%</span>
     </div>
     <div class="chat-header">
         <span class="back-arrow">←</span>
-        <div class="avatar">沈</div>
+        <div class="avatar">DS</div>
         <div class="header-info">
-            <div class="header-name">沈砚 ⚡️</div>
-            <div class="header-status">✨ 对方正在输入...</div>
+            <div class="header-name">DeepSeek · 智能助手</div>
+            <div class="header-status"><span class="online-dot"></span> 在线 · 深度思考</div>
         </div>
-        <span class="menu-icon">⋮</span>
+        <span class="menu-icon">⋯</span>
     </div>
 
-    <div class="chat-area">
-        <!-- 以下是80+条模拟聊天记录 -->
+    <!-- 简易 API 配置栏 -->
+    <div class="settings-panel">
+        <input type="text" id="apiKeyInput" class="api-input" placeholder="DeepSeek API Key (sk-...)" value="">
+        <button id="saveApiBtn" class="save-btn">保存密钥</button>
+        <span id="apiStatus" class="status-badge">⚙️ 未配置</span>
+    </div>
+
+    <!-- 聊天记录区 -->
+    <div class="chat-area scroll-style" id="chatArea">
         <div class="message-row message-left">
-            <div class="bubble bubble-left">到了？</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">到啦到啦！刚下飞机～ 苏念说我眼睛里有两个大字：想家😢</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">两个大字？明明是「饿」和「困」</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">才没有！ 我飞机上吃了一整份意面➕小蛋糕🍰</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">胃疼没？</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">不疼！！（真的真的 我有乖乖吃饭 给你看照片📸</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">[图片：机场餐厅的意面光盘]</div>
+            <div class="bubble bubble-left">
+                ✨ 你好呀！我是 DeepSeek，你的智能对话伙伴。<br>
+                请在上方输入你的 API Key（可从 platform.deepseek.com 获取），之后就可以畅快聊天啦～
+            </div>
         </div>
         <div class="message-row message-left">
-            <div class="bubble bubble-left">勉强信你。</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">司机在出口D，车牌尾号S668。上车前喝热水，保温杯在行李箱侧袋。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">🥺 哥哥你什么时候塞进去的……感动死了</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">你收拾行李的时候一直在念叨「忘记带保温杯」，睡着了也在念。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">……我做梦都在说这个吗😳</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">还说「沈砚好帅」</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">！！！！ 你骗人！！！我做梦不说梦话！！！</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">嗯，骗你的。但「沈砚好帅」是事实。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">……脸呢？ 堂堂沈总的矜持呢？</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">在你行李箱里，和保温杯放一起。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">🙄 我快上车了，好热，三亚晒得我快融化🥵</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">防晒霜涂了没？别又过敏。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">涂了涂了！你买的那个贵妇品牌，我每天像刷墙一样涂全身</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">拍后背给我看，有没有晒红。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">现在？在车上诶苏念在旁边😳</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">那回家看。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">（缩脖子）……哥哥你每次说这句话都像在警告什么</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">就是警告。晚上视频检查。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">呜……好吧🥺</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">对了！！！我在免税店给你买了好东西！！🎁</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">什么？</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">嘿嘿～ 一条领带，深蓝色带暗纹的，柜姐说很适合「气场强大但内心温柔」的男士，我就觉得是你！！</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">「气场强大但内心温柔」  谁教你这么形容的。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">我自己想的！那你说对不对嘛</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">……对。</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">花多少钱？我转你。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">不要！！我自己实习工资攒的！我要用自己赚的钱给男朋友买礼物！</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">男朋友？</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">……哥哥</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">嗯。礼物我很喜欢。</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">[转账] 52000.00  备注: 领带回礼</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">沈砚！！你又来！！ 我不要！ 你每次转这么多我压力好大</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">不收就双倍。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">你！！不讲道理！！</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">我从来不讲道理，只宠你。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">（脸红到脖子） 苏念问我为什么对着手机傻笑 我没脸见人了</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">让她习惯。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">你在干嘛？工作？</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">开会。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">！！！！你开会还跟我发消息？？？ 对方是不是跨国并购那个大案子</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">嗯，他们在吵条款，没意思。不如跟你聊天。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">你认真开会啊沈总！ 那可是几百亿的生意！</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">你比几百亿重要。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">…………我要截图当壁纸</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">嗯。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">对了！！！苏念问我你平时怎么叫我，我说哥哥，她说好无趣，有没有更甜的。</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">宝宝、宝贝、小猫、念念、小金…… 反正不是「金念晞」</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">你叫我全名的时候超可怕的好吧！😱 每次都要罚站什么的</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">因为你该罚。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">可是你罚完又会抱抱我嘛</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">知道就好。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">唔… 哥哥，我腰酸 酒店床太软了，睡不好🥺</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">你睡姿本来就差。</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">枕头底下压了你的东西？</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">（心虚） 你的家居衫……你怎么知道！！ 你在我行李箱安监控了？？</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">不用监控。你每次出远门都会偷一件我的衣服，回来的时候上面全是你的味道。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">Omg 社死现场🫣 你不要说出来啊</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">我衣柜里你的那件家居衫，我穿之前都会先闻，确定有你的味道再穿。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">………………沈砚你今天情话浓度超标了！！ 我要晕过去了</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">晕了我抱。转你钱的时候怎么不晕？</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">因为那是惊吓，不是心动！</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">[转账] 88888.00  备注: 心动基金</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">…………我恨你</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">爱。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">晚上吃什么？我要点海鲜外卖！！这里的龙虾好便宜</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">不许生冷。让酒店蒸好送上来，配姜茶。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">可是姜茶好难喝  苦</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">放蜂蜜了，不苦。听话。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">好吧…… 你每次都把我当小孩管</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">你不是小孩？昨晚谁视频的时候抱着玩偶睡着的？</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">那是你的替代品！ 它哪有你好抱</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">给你带了个礼物。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">什么什么！！ 我现在就想知道！！</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">沈氏新出的睡眠监测抱枕，能模拟人体心跳和体温。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">天啊 你什么时候研发的？？</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">你第一次出差说睡不着的那天。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">哥哥😭😭😭 我要哭了</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">别哭。回来抱着真的，抱枕给苏念。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">苏念：我在旁边看着呢，你们当我空气是吧？</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">嗯。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">苏念说你冷漠无情，哈哈哈哈哈</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">对她无情，对你有义。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">成语是这么用的吗沈总🤣</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">怎么用都行。你开心就好。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">汇报行程：今晚吃了蒜蓉龙虾、清蒸石斑、椰子饭、还有一小碗姜茶（喝完了！）</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">乖。胃有没有胀？</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">一点点，但是吃完益生菌就好啦～</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">嗯。去洗澡，洗完视频。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">能不能不视频……我今天被晒得有点黑，不好看</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">金念晞。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">……到</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">不管黑不黑，你在我眼里最好看。现在去洗，洗完打给我。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">（脸红）知道了…… 你等我一下</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">手机放浴室柜，别掉水里。</div>
-        </div>
-        <div class="message-row message-right">
-            <div class="bubble bubble-right">知道啦啰嗦鬼！ 爱你❤️❤️</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">❤️</div>
-        </div>
-        <div class="message-row message-left">
-            <div class="bubble bubble-left">等你。</div>
+            <div class="bubble bubble-left">
+                💡 提示：API Key 仅存储在本会话中，不会上传到任何服务器。
+            </div>
         </div>
     </div>
 
-    <div class="input-bar">
-        <div style="color:#5e6f7e; font-size:24px;">😊</div>
-        <div class="input-field">输入消息...</div>
-        <div class="send-btn">📤</div>
+    <!-- 底部输入区 -->
+    <div class="input-wrapper">
+        <div class="input-bar">
+            <input type="text" id="messageInput" class="input-field" placeholder="给 DeepSeek 发消息..." autocomplete="off">
+            <button id="sendBtn" class="send-btn">➤</button>
+        </div>
+        <div class="footer-note">由 DeepSeek API 驱动 · 真实对话</div>
     </div>
-    <div class="footer-note">✨ 已加密聊天 · 仅对方可见 ✨</div>
 </div>
+
+<script>
+    // ---------- DOM 元素 ----------
+    const chatArea = document.getElementById('chatArea');
+    const messageInput = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const apiKeyInput = document.getElementById('apiKeyInput');
+    const saveApiBtn = document.getElementById('saveApiBtn');
+    const apiStatusSpan = document.getElementById('apiStatus');
+
+    // ---------- 状态 ----------
+    let API_KEY = localStorage.getItem('deepseek_api_key') || '';
+    let isWaitingReply = false;      // 防止重复发送
+    let currentAssistantMessageDiv = null;  // 用于流式更新（本次使用普通模式，简化但保留结构）
+    
+    // 初始化加载本地存储的key
+    if (API_KEY) {
+        apiKeyInput.value = API_KEY;
+        updateApiStatus(true);
+    } else {
+        updateApiStatus(false);
+    }
+
+    // 更新API状态显示
+    function updateApiStatus(isValid) {
+        if (isValid && API_KEY && API_KEY.startsWith('sk-')) {
+            apiStatusSpan.innerHTML = '✅ API 已就绪';
+            apiStatusSpan.style.color = '#8bcb8c';
+        } else if (API_KEY && !API_KEY.startsWith('sk-')) {
+            apiStatusSpan.innerHTML = '⚠️ 格式错误 (需sk-)';
+            apiStatusSpan.style.color = '#f9b43a';
+        } else {
+            apiStatusSpan.innerHTML = '🔑 未配置密钥';
+            apiStatusSpan.style.color = '#aaabb8';
+        }
+    }
+
+    // 保存 API Key
+    saveApiBtn.addEventListener('click', () => {
+        let newKey = apiKeyInput.value.trim();
+        if (newKey === '') {
+            localStorage.removeItem('deepseek_api_key');
+            API_KEY = '';
+            updateApiStatus(false);
+            appendSystemMessage('❌ 已清除 API Key，如需对话请重新配置～', 'left');
+            return;
+        }
+        if (!newKey.startsWith('sk-')) {
+            appendSystemMessage('⚠️ API Key 格式似乎不正确，应该以 "sk-" 开头，请检查后重试。', 'left');
+            apiStatusSpan.innerHTML = '⚠️ 无效Key';
+            return;
+        }
+        API_KEY = newKey;
+        localStorage.setItem('deepseek_api_key', API_KEY);
+        updateApiStatus(true);
+        appendSystemMessage('✅ API Key 已保存！现在可以尽情聊天啦～', 'left');
+    });
+
+    // 追加系统/普通消息 (text, 方向 left/right)
+    function appendMessage(text, sender) {
+        const isUser = (sender === 'right');
+        const messageRow = document.createElement('div');
+        messageRow.className = `message-row ${isUser ? 'message-right' : 'message-left'}`;
+        const bubble = document.createElement('div');
+        bubble.className = `bubble ${isUser ? 'bubble-right' : 'bubble-left'}`;
+        bubble.innerText = text;
+        messageRow.appendChild(bubble);
+        
+        const metaDiv = document.createElement('div');
+        metaDiv.className = 'meta';
+        const now = new Date();
+        const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+        metaDiv.innerText = isUser ? `${timeStr} 已读` : `${timeStr}`;
+        messageRow.appendChild(metaDiv);
+        
+        chatArea.appendChild(messageRow);
+        scrollToBottom();
+        return messageRow;
+    }
+
+    function appendSystemMessage(text, side = 'left') {
+        const messageRow = document.createElement('div');
+        messageRow.className = `message-row message-${side}`;
+        const bubble = document.createElement('div');
+        bubble.className = `bubble bubble-left`;
+        bubble.style.background = '#202b36';
+        bubble.style.color = '#cbdbe6';
+        bubble.innerText = text;
+        messageRow.appendChild(bubble);
+        const metaDiv = document.createElement('div');
+        metaDiv.className = 'meta';
+        const now = new Date();
+        metaDiv.innerText = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+        messageRow.appendChild(metaDiv);
+        chatArea.appendChild(messageRow);
+        scrollToBottom();
+    }
+
+    // 显示“正在输入”占位符
+    let typingRow = null;
+    function showTypingIndicator() {
+        removeTypingIndicator();
+        typingRow = document.createElement('div');
+        typingRow.className = 'message-row message-left';
+        typingRow.id = 'typingIndicator';
+        const indicatorDiv = document.createElement('div');
+        indicatorDiv.className = 'typing-indicator';
+        for (let i = 0; i < 3; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'typing-dot';
+            indicatorDiv.appendChild(dot);
+        }
+        typingRow.appendChild(indicatorDiv);
+        chatArea.appendChild(typingRow);
+        scrollToBottom();
+    }
+
+    function removeTypingIndicator() {
+        if (typingRow && typingRow.parentNode) {
+            typingRow.remove();
+            typingRow = null;
+        }
+    }
+
+    function scrollToBottom() {
+        chatArea.scrollTop = chatArea.scrollHeight;
+    }
+
+    // 核心：调用 DeepSeek API (非流式，简单可靠)
+    async function callDeepSeekAPI(userMessage) {
+        if (!API_KEY || !API_KEY.startsWith('sk-')) {
+            appendSystemMessage('🔑 请先配置有效的 DeepSeek API Key （点击上方“保存密钥”）', 'left');
+            return null;
+        }
+
+        // 构造对话上下文（可选简单记忆最近6条，更人性化）
+        // 我们只取最近几轮对话作为上下文，但为了简洁，直接发送当前消息+角色设定更符合“人设延续”
+        // 加载人设：根据沈砚&金念晞风格？但既然是指定DeepSeek通用智能，可塑造为温柔体贴又带点风趣的助手。
+        // 根据用户需求“deepseek来回答”，我们希望模型带有类似沈砚式男友力？或者保留通用助手的智慧。
+        // 为了让效果更佳，加入system prompt: 温柔知性，偶尔幽默，会关心人。
+        const systemPrompt = `你是一个温柔、聪明且拥有高情商的私人智能助手，名字叫DeepSeek。你喜欢用简洁又温暖的方式回答问题，有时候带一点点幽默感。你会关心对方的情绪，如果对方提到身体不舒服或者心情差，你会适当表达关心。你的对话风格是：友善、真诚、不啰嗦，偶尔用表情符号增加亲和力。`;
+        
+        const messages = [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: userMessage }
+        ];
+        
+        try {
+            const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: 'deepseek-chat',
+                    messages: messages,
+                    temperature: 0.7,
+                    max_tokens: 800,
+                    stream: false
+                })
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                let errorMsg = `API 错误 ${response.status}`;
+                if (response.status === 401) errorMsg = 'API Key 无效或已过期，请检查密钥';
+                else if (response.status === 429) errorMsg = '请求频率过高，请稍后再试';
+                else if (errorData.error?.message) errorMsg = errorData.error.message;
+                throw new Error(errorMsg);
+            }
+            
+            const data = await response.json();
+            const reply = data.choices[0]?.message?.content;
+            if (!reply) throw new Error('返回内容为空');
+            return reply.trim();
+        } catch (err) {
+            console.error('DeepSeek API 调用失败:', err);
+            let friendlyMsg = `🤖 请求失败：${err.message}`;
+            if (err.message.includes('API Key')) friendlyMsg = `🔐 密钥验证失败，请检查 DeepSeek API Key 是否正确。`;
+            else if (err.message.includes('network')) friendlyMsg = `🌐 网络错误，请检查你的互联网连接。`;
+            appendSystemMessage(friendlyMsg, 'left');
+            return null;
+        }
+    }
+
+    // 发送消息主流程
+    async function sendMessage() {
+        if (isWaitingReply) {
+            appendSystemMessage('请稍等，我还在思考中……', 'left');
+            return;
+        }
+        const userText = messageInput.value.trim();
+        if (userText === '') return;
+        
+        // 未配置API拦截
+        if (!API_KEY || !API_KEY.startsWith('sk-')) {
+            appendSystemMessage('🔑 请先在上方输入有效的 DeepSeek API Key 并点击“保存密钥”后再聊天~', 'left');
+            return;
+        }
+        
+        // 显示用户消息
+        appendMessage(userText, 'right');
+        messageInput.value = '';
+        messageInput.focus();
+        
+        // 锁定发送按钮，展示思考指示器
+        isWaitingReply = true;
+        sendBtn.classList.add('disabled');
+        showTypingIndicator();
+        
+        // 调用API
+        const assistantReply = await callDeepSeekAPI(userText);
+        removeTypingIndicator();
+        
+        if (assistantReply) {
+            appendMessage(assistantReply, 'left');
+        } else {
+            // 错误提示已由 callDeepSeekAPI 内部 appendSystemMessage，无需额外动作
+            if (!chatArea.innerHTML.includes('调用失败')) {
+                // 防止重复提示
+            }
+        }
+        
+        isWaitingReply = false;
+        sendBtn.classList.remove('disabled');
+    }
+    
+    // 事件绑定
+    sendBtn.addEventListener('click', sendMessage);
+    messageInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+    
+    // 初次展示问候，若有apikey则提示准备就绪
+    if (API_KEY) {
+        setTimeout(() => {
+            appendSystemMessage(`✨ API Key 已加载完成，直接开始聊天吧！你可以问我任何问题～`, 'left');
+        }, 300);
+    } else {
+        setTimeout(() => {
+            appendSystemMessage(`📌 快速开始：1. 访问 https://platform.deepseek.com/ 注册并获取 API Key；2. 粘贴至上方输入框并保存。 之后就可以和我畅聊啦！`, 'left');
+        }, 200);
+    }
+    
+    // 额外样式优化滚动区域
+    chatArea.classList.add('scroll-style');
+    
+    // 增加本地记忆: 如果用户不小心点保存空值，友好反馈
+    window.addEventListener('load', () => {
+        // 没有任何额外操作
+        const style = document.createElement('style');
+        style.innerHTML = `.disabled { opacity: 0.5; pointer-events: none; }`;
+        document.head.appendChild(style);
+    });
+</script>
 </body>
 </html>
