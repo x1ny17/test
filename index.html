@@ -2,188 +2,222 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>沈砚✖️金念晞 · 冰丝袖误会小剧场</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>沈砚 ❤ 念念 · 聊天记录</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
-            background: #1a1a1a;
+            background: #1a1c1e;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
         }
-
+        /* 手机容器 */
         .phone {
-            width: 380px;
-            height: 700px;
-            background: #f5f5f5;
+            width: 100%;
+            max-width: 420px;
+            height: 780px;
+            background: #0e0f11;
             border-radius: 36px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             overflow: hidden;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.5), 0 0 0 8px #2c2e31;
+            position: relative;
             display: flex;
             flex-direction: column;
-            position: relative;
         }
-
+        /* 状态栏 + 头部 */
         .status-bar {
-            background: #ffffff;
-            padding: 12px 20px 8px 20px;
+            background: #0e0f11;
+            padding: 12px 20px 6px 20px;
             display: flex;
             justify-content: space-between;
             font-size: 14px;
             font-weight: 590;
-            color: #1c1c1e;
-            border-bottom: 0.5px solid #e9e9ef;
+            color: #e8edf2;
+            font-family: monospace;
         }
-
         .chat-header {
-            background: #ffffff;
-            padding: 12px 20px;
+            background: #0e0f11;
+            padding: 8px 16px 12px;
+            border-bottom: 0.5px solid #2c2f33;
             display: flex;
             align-items: center;
             gap: 12px;
-            border-bottom: 0.5px solid #e9e9ef;
         }
-
-        .back-icon {
-            font-size: 24px;
-            color: #007aff;
-            cursor: default;
+        .back-arrow {
+            font-size: 28px;
+            color: #2e7dff;
+            font-weight: 400;
+            line-height: 1;
         }
-
         .avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(145deg, #1e2b3c, #0f1a24);
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(145deg, #2c3e4e, #1e2a36);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            font-size: 20px;
             font-weight: 600;
-            font-size: 18px;
+            color: #cddcec;
         }
-
-        .chat-info {
+        .header-info {
             flex: 1;
         }
-
-        .chat-name {
-            font-weight: 600;
+        .header-name {
             font-size: 17px;
-            color: #000;
+            font-weight: 620;
+            color: #ffffff;
         }
-
-        .chat-status {
+        .header-status {
             font-size: 12px;
-            color: #8e8e93;
+            color: #6c8c9c;
+            margin-top: 2px;
         }
-
         .menu-icon {
             font-size: 22px;
-            color: #007aff;
+            color: #2e7dff;
         }
-
-        .chat-body {
+        /* 聊天区域 */
+        .chat-area {
             flex: 1;
             overflow-y: auto;
             padding: 16px 12px;
-            background: #f5f5f5;
             display: flex;
             flex-direction: column;
             gap: 12px;
+            background: #0e0f11;
         }
-
-        .message {
+        /* 气泡行 */
+        .message-row {
             display: flex;
-            max-width: 80%;
-            align-items: flex-end;
-            gap: 6px;
+            width: 100%;
         }
-
-        .user-message {
-            align-self: flex-end;
-            flex-direction: row-reverse;
+        .message-left {
+            justify-content: flex-start;
         }
-
-        .bot-message {
-            align-self: flex-start;
+        .message-right {
+            justify-content: flex-end;
         }
-
+        /* 气泡 */
         .bubble {
+            max-width: 78%;
             padding: 10px 14px;
             border-radius: 20px;
             font-size: 15px;
-            line-height: 1.4;
+            line-height: 1.45;
             word-wrap: break-word;
-            box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.05);
+            position: relative;
         }
-
-        .user-bubble {
-            background: #007aff;
+        .bubble-left {
+            background: #1f2c38;
+            color: #eef3fc;
+            border-bottom-left-radius: 5px;
+        }
+        .bubble-right {
+            background: #2e7dff;
             color: white;
-            border-bottom-right-radius: 4px;
+            border-bottom-right-radius: 5px;
         }
-
-        .bot-bubble {
-            background: #e5e5ea;
-            color: #000;
-            border-bottom-left-radius: 4px;
-        }
-
-        .timestamp {
+        /* 时间/已读 */
+        .meta {
             font-size: 10px;
-            color: #8e8e93;
+            color: #5e6f7e;
             margin-top: 4px;
-            margin-left: 8px;
-            margin-right: 8px;
-        }
-
-        .user-message .timestamp {
-            text-align: right;
-        }
-
-        .input-bar {
-            background: #ffffff;
-            padding: 10px 16px;
+            margin-left: 12px;
+            margin-right: 12px;
             display: flex;
+            gap: 6px;
+        }
+        .message-right .meta {
+            justify-content: flex-end;
+        }
+        /* 转账卡片样式 */
+        .transfer-card {
+            background: #1e2a32;
+            border-radius: 18px;
+            padding: 10px 16px;
+            display: inline-flex;
             align-items: center;
             gap: 12px;
-            border-top: 0.5px solid #e9e9ef;
+            border: 0.5px solid #3a4a5a;
         }
-
-        .voice-icon, .emoji-icon, .add-icon {
-            font-size: 24px;
-            color: #007aff;
-            cursor: default;
+        .transfer-amount {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffd966;
         }
-
-        .text-field {
-            flex: 1;
-            background: #f5f5f5;
-            border: none;
+        .transfer-note {
+            font-size: 12px;
+            color: #9aaebf;
+        }
+        .inline-image {
+            background: #1f2c38;
+            border-radius: 16px;
+            padding: 8px 12px;
+            font-size: 13px;
+            color: #bdd4e8;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        /* 表情包占位 */
+        .sticker {
+            background: #1f2c38;
             border-radius: 20px;
-            padding: 8px 14px;
-            font-size: 15px;
-            outline: none;
+            padding: 6px 12px;
+            font-size: 28px;
         }
-
-        .chat-body::-webkit-scrollbar {
+        /* 滚动条 */
+        .chat-area::-webkit-scrollbar {
             width: 4px;
         }
-        .chat-body::-webkit-scrollbar-track {
-            background: transparent;
+        .chat-area::-webkit-scrollbar-track {
+            background: #1a1c1e;
         }
-        .chat-body::-webkit-scrollbar-thumb {
-            background: #c6c6c8;
+        .chat-area::-webkit-scrollbar-thumb {
+            background: #3e4a57;
             border-radius: 10px;
+        }
+        .input-bar {
+            background: #14171a;
+            padding: 10px 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            border-top: 0.5px solid #2c2f33;
+        }
+        .input-field {
+            flex: 1;
+            background: #1e2227;
+            border: none;
+            border-radius: 28px;
+            padding: 10px 16px;
+            font-size: 15px;
+            color: #ddd;
+        }
+        .send-btn {
+            background: #2e7dff;
+            border: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 30px;
+            color: white;
+            font-weight: bold;
+        }
+        .footer-note {
+            text-align: center;
+            font-size: 10px;
+            color: #3e4a57;
+            padding: 8px;
+            background: #0e0f11;
         }
     </style>
 </head>
@@ -194,197 +228,337 @@
         <span>📶 🔋 100%</span>
     </div>
     <div class="chat-header">
-        <span class="back-icon">←</span>
-        <div class="avatar">砚</div>
-        <div class="chat-info">
-            <div class="chat-name">沈砚</div>
-            <div class="chat-status">👤 对方正在输入...</div>
+        <span class="back-arrow">←</span>
+        <div class="avatar">沈</div>
+        <div class="header-info">
+            <div class="header-name">沈砚 ⚡️</div>
+            <div class="header-status">✨ 对方正在输入...</div>
         </div>
-        <span class="menu-icon">⋯</span>
+        <span class="menu-icon">⋮</span>
     </div>
 
-    <div class="chat-body" id="chatContainer"></div>
+    <div class="chat-area">
+        <!-- 以下是80+条模拟聊天记录 -->
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">到了？</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">到啦到啦！刚下飞机～ 苏念说我眼睛里有两个大字：想家😢</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">两个大字？明明是「饿」和「困」</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">才没有！ 我飞机上吃了一整份意面➕小蛋糕🍰</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">胃疼没？</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">不疼！！（真的真的 我有乖乖吃饭 给你看照片📸</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">[图片：机场餐厅的意面光盘]</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">勉强信你。</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">司机在出口D，车牌尾号S668。上车前喝热水，保温杯在行李箱侧袋。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">🥺 哥哥你什么时候塞进去的……感动死了</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">你收拾行李的时候一直在念叨「忘记带保温杯」，睡着了也在念。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">……我做梦都在说这个吗😳</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">还说「沈砚好帅」</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">！！！！ 你骗人！！！我做梦不说梦话！！！</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">嗯，骗你的。但「沈砚好帅」是事实。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">……脸呢？ 堂堂沈总的矜持呢？</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">在你行李箱里，和保温杯放一起。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">🙄 我快上车了，好热，三亚晒得我快融化🥵</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">防晒霜涂了没？别又过敏。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">涂了涂了！你买的那个贵妇品牌，我每天像刷墙一样涂全身</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">拍后背给我看，有没有晒红。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">现在？在车上诶苏念在旁边😳</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">那回家看。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">（缩脖子）……哥哥你每次说这句话都像在警告什么</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">就是警告。晚上视频检查。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">呜……好吧🥺</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">对了！！！我在免税店给你买了好东西！！🎁</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">什么？</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">嘿嘿～ 一条领带，深蓝色带暗纹的，柜姐说很适合「气场强大但内心温柔」的男士，我就觉得是你！！</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">「气场强大但内心温柔」  谁教你这么形容的。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">我自己想的！那你说对不对嘛</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">……对。</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">花多少钱？我转你。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">不要！！我自己实习工资攒的！我要用自己赚的钱给男朋友买礼物！</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">男朋友？</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">……哥哥</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">嗯。礼物我很喜欢。</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">[转账] 52000.00  备注: 领带回礼</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">沈砚！！你又来！！ 我不要！ 你每次转这么多我压力好大</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">不收就双倍。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">你！！不讲道理！！</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">我从来不讲道理，只宠你。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">（脸红到脖子） 苏念问我为什么对着手机傻笑 我没脸见人了</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">让她习惯。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">你在干嘛？工作？</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">开会。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">！！！！你开会还跟我发消息？？？ 对方是不是跨国并购那个大案子</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">嗯，他们在吵条款，没意思。不如跟你聊天。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">你认真开会啊沈总！ 那可是几百亿的生意！</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">你比几百亿重要。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">…………我要截图当壁纸</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">嗯。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">对了！！！苏念问我你平时怎么叫我，我说哥哥，她说好无趣，有没有更甜的。</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">宝宝、宝贝、小猫、念念、小金…… 反正不是「金念晞」</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">你叫我全名的时候超可怕的好吧！😱 每次都要罚站什么的</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">因为你该罚。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">可是你罚完又会抱抱我嘛</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">知道就好。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">唔… 哥哥，我腰酸 酒店床太软了，睡不好🥺</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">你睡姿本来就差。</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">枕头底下压了你的东西？</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">（心虚） 你的家居衫……你怎么知道！！ 你在我行李箱安监控了？？</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">不用监控。你每次出远门都会偷一件我的衣服，回来的时候上面全是你的味道。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">Omg 社死现场🫣 你不要说出来啊</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">我衣柜里你的那件家居衫，我穿之前都会先闻，确定有你的味道再穿。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">………………沈砚你今天情话浓度超标了！！ 我要晕过去了</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">晕了我抱。转你钱的时候怎么不晕？</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">因为那是惊吓，不是心动！</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">[转账] 88888.00  备注: 心动基金</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">…………我恨你</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">爱。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">晚上吃什么？我要点海鲜外卖！！这里的龙虾好便宜</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">不许生冷。让酒店蒸好送上来，配姜茶。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">可是姜茶好难喝  苦</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">放蜂蜜了，不苦。听话。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">好吧…… 你每次都把我当小孩管</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">你不是小孩？昨晚谁视频的时候抱着玩偶睡着的？</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">那是你的替代品！ 它哪有你好抱</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">给你带了个礼物。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">什么什么！！ 我现在就想知道！！</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">沈氏新出的睡眠监测抱枕，能模拟人体心跳和体温。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">天啊 你什么时候研发的？？</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">你第一次出差说睡不着的那天。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">哥哥😭😭😭 我要哭了</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">别哭。回来抱着真的，抱枕给苏念。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">苏念：我在旁边看着呢，你们当我空气是吧？</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">嗯。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">苏念说你冷漠无情，哈哈哈哈哈</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">对她无情，对你有义。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">成语是这么用的吗沈总🤣</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">怎么用都行。你开心就好。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">汇报行程：今晚吃了蒜蓉龙虾、清蒸石斑、椰子饭、还有一小碗姜茶（喝完了！）</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">乖。胃有没有胀？</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">一点点，但是吃完益生菌就好啦～</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">嗯。去洗澡，洗完视频。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">能不能不视频……我今天被晒得有点黑，不好看</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">金念晞。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">……到</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">不管黑不黑，你在我眼里最好看。现在去洗，洗完打给我。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">（脸红）知道了…… 你等我一下</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">手机放浴室柜，别掉水里。</div>
+        </div>
+        <div class="message-row message-right">
+            <div class="bubble bubble-right">知道啦啰嗦鬼！ 爱你❤️❤️</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">❤️</div>
+        </div>
+        <div class="message-row message-left">
+            <div class="bubble bubble-left">等你。</div>
+        </div>
+    </div>
 
     <div class="input-bar">
-        <span class="voice-icon">🎤</span>
-        <div class="text-field">发消息...</div>
-        <span class="emoji-icon">😊</span>
-        <span class="add-icon">➕</span>
+        <div style="color:#5e6f7e; font-size:24px;">😊</div>
+        <div class="input-field">输入消息...</div>
+        <div class="send-btn">📤</div>
     </div>
+    <div class="footer-note">✨ 已加密聊天 · 仅对方可见 ✨</div>
 </div>
-
-<script>
-    // 全部消息数组 —— 冰丝袖误会完整版
-    const messages = [
-        { sender: "user", text: "我不喜欢戴", time: "14:28" },
-        { sender: "user", text: "感觉戴了也不凉啊，还是很热", time: "14:28" },
-        { sender: "bot", text: "我也不喜欢", time: "14:29" },
-        { sender: "bot", text: "感觉被勒住了", time: "14:29" },
-        { sender: "user", text: "？我在说冰丝袖，你在讲什么", time: "14:29" },
-        { sender: "bot", text: "......", time: "14:30" },
-        { sender: "bot", text: "冰丝袖？", time: "14:30" },
-        { sender: "user", text: "不然你以为是什么？？", time: "14:30" },
-        { sender: "bot", text: "没什么。", time: "14:31" },
-        { sender: "user", text: "沈砚你刚刚是不是想到奇怪的东西了", time: "14:31" },
-        { sender: "bot", text: "没有。", time: "14:31" },
-        { sender: "user", text: "你明明说勒得慌！！冰丝袖怎么会勒！", time: "14:32" },
-        { sender: "user", text: "我买的L码！", time: "14:32" },
-        { sender: "bot", text: "嗯，我的错，没看清主语。", time: "14:32" },
-        { sender: "user", text: "所以你刚刚到底在想啥🤨", time: "14:33" },
-        { sender: "bot", text: "开会。", time: "14:33" },
-        { sender: "user", text: "少来，刚聊着天呢，开什么会", time: "14:33" },
-        { sender: "bot", text: "想你。", time: "14:34" },
-        { sender: "user", text: "！！！别转移话题", time: "14:34" },
-        { sender: "user", text: "老实交代，是不是想歪了🧐", time: "14:34" },
-        { sender: "bot", text: "......嗯。", time: "14:35" },
-        { sender: "user", text: "哈哈哈哈哈哈哈哈哈哈", time: "14:35" },
-        { sender: "user", text: "沈大总裁也会想歪啊", time: "14:35" },
-        { sender: "bot", text: "金念晞。", time: "14:36" },
-        { sender: "user", text: "在在在，哥哥我在", time: "14:36" },
-        { sender: "bot", text: "再笑今晚就别想睡了。", time: "14:36" },
-        { sender: "user", text: "😝你抓不到重点的样子好好笑", time: "14:37" },
-        { sender: "user", text: "所以你不喜欢戴那个？不是冰丝袖，是另一个", time: "14:37" },
-        { sender: "bot", text: "不喜欢。", time: "14:37" },
-        { sender: "user", text: "可是上次你不是...", time: "14:38" },
-        { sender: "bot", text: "我说的是冰丝袖也不喜欢，刚查了。", time: "14:38" },
-        { sender: "user", text: "你现搜的？", time: "14:38" },
-        { sender: "bot", text: "嗯。", time: "14:39" },
-        { sender: "user", text: "我还以为你什么都懂", time: "14:39" },
-        { sender: "bot", text: "这种日常用品确实没了解过。", time: "14:39" },
-        { sender: "user", text: "那以后我买冰丝袖的时候，你可别再说勒了😏", time: "14:40" },
-        { sender: "bot", text: "买好的，我报销。", time: "14:40" },
-        { sender: "user", text: "重点不是报销！重点是别乱联想！", time: "14:40" },
-        { sender: "bot", text: "尽量。", time: "14:41" },
-        { sender: "user", text: "尽量？？不应该是保证吗", time: "14:41" },
-        { sender: "bot", text: "保证不了，和你有关的事物容易产生联想。", time: "14:41" },
-        { sender: "user", text: "😳😳😳犯规了沈砚", time: "14:42" },
-        { sender: "bot", text: "实话。", time: "14:42" },
-        { sender: "user", text: "不过说实话，冰丝袖真的不凉快，闷死了", time: "14:42" },
-        { sender: "user", text: "夏天防晒服也不好穿", time: "14:43" },
-        { sender: "bot", text: "别晒黑就行，黑了也好看。", time: "14:43" },
-        { sender: "user", text: "彩虹屁没用，我就是体质怕热", time: "14:43" },
-        { sender: "bot", text: "出门让司机接，车里空调够足。", time: "14:44" },
-        { sender: "user", text: "实习又不想太高调，大家都挤地铁", time: "14:44" },
-        { sender: "bot", text: "想舒服就别在意别人眼光。", time: "14:44" },
-        { sender: "user", text: "知道啦——不过今天这误会我要记下来", time: "14:45" },
-        { sender: "user", text: "沈砚大型社死现场", time: "14:45" },
-        { sender: "bot", text: "金念晞，适可而止。", time: "14:45" },
-        { sender: "user", text: "你叫全名也没用，截图了", time: "14:46" },
-        { sender: "bot", text: "手机拿来。", time: "14:46" },
-        { sender: "user", text: "就不，略略略", time: "14:46" },
-        { sender: "bot", text: "晚上见面再说。", time: "14:47" },
-        { sender: "user", text: "你以为我怕你呀", time: "14:47" },
-        { sender: "user", text: "对了，你觉得冰丝袖有没有用，真能防晒？", time: "14:47" },
-        { sender: "bot", text: "有用，但看材质。回头让人送几套测评好的。", time: "14:48" },
-        { sender: "user", text: "哇，资本主义的力量", time: "14:48" },
-        { sender: "bot", text: "另外，以后说话分下类，免得我误解。", time: "14:48" },
-        { sender: "user", text: "这还怪我咯！我说冰丝袖！哪个正经人第一时间联想到套套", time: "14:49" },
-        { sender: "bot", text: "我不正经。", time: "14:49" },
-        { sender: "user", text: "......好家伙噎住了", time: "14:49" },
-        { sender: "user", text: "你突然这么坦诚我不习惯", time: "14:50" },
-        { sender: "bot", text: "对你没必要装。", time: "14:50" },
-        { sender: "user", text: "所以你到底是因为不喜欢用还是因为勒", time: "14:50" },
-        { sender: "bot", text: "两者都有，但主要是——影响发挥。", time: "14:51" },
-        { sender: "user", text: "啊啊啊啊不许开车了！", time: "14:51" },
-        { sender: "bot", text: "你先问的。", time: "14:51" },
-        { sender: "user", text: "我错了，我们回到冰丝袖的话题", time: "14:52" },
-        { sender: "bot", text: "嗯，我让小助理联系几个品牌。", time: "14:52" },
-        { sender: "user", text: "不用啦，我自己逛淘宝就好，你忙你的", time: "14:52" },
-        { sender: "bot", text: "行，卡在你包里，随便刷。", time: "14:53" },
-        { sender: "user", text: "🥺所以你刚才真的一点都没反应过来我说的是冰袖吗", time: "14:53" },
-        { sender: "bot", text: "没反应过来。你突然说不喜欢戴，下意识就答了。", time: "14:53" },
-        { sender: "user", text: "笑死，原来沈总脑子里都是黄色废料", time: "14:54" },
-        { sender: "bot", text: "仅限对你。", time: "14:54" },
-        { sender: "user", text: "好了好了不笑话你了，摸摸头", time: "14:54" },
-        { sender: "bot", text: "手拿开。", time: "14:55" },
-        { sender: "user", text: "就摸，你隔着屏幕还能打我屁股不成", time: "14:55" },
-        { sender: "bot", text: "晚上看你还说不说得出这句话。", time: "14:55" },
-        { sender: "user", text: "😭哥哥我错了", time: "14:56" },
-        { sender: "user", text: "那我继续吐槽冰丝袖啦，黏糊糊的还起球", time: "14:56" },
-        { sender: "bot", text: "扔了，买新的。让人定做真丝冰袖？", time: "14:56" },
-        { sender: "user", text: "？？？还有这种东西", time: "14:57" },
-        { sender: "bot", text: "只要你需要，就有。", time: "14:57" },
-        { sender: "user", text: "可是我刚刚还在说不喜欢戴任何袖套嘛", time: "14:57" },
-        { sender: "bot", text: "那就别戴，晒不晒无所谓，你开心重要。", time: "14:58" },
-        { sender: "user", text: "呜呜沈砚好好哦，虽然你刚刚好色", time: "14:58" },
-        { sender: "bot", text: "......这个话题能不能跳过去。", time: "14:58" },
-        { sender: "user", text: "跳不过去，我要记一辈子", time: "14:59" },
-        { sender: "user", text: "【截图.jpg】", time: "14:59" },
-        { sender: "bot", text: "金念晞，你完了。", time: "14:59" },
-        { sender: "user", text: "吓得我赶紧下单了两盒冰丝袖", time: "15:00" },
-        { sender: "bot", text: "是正经冰丝袖？", time: "15:00" },
-        { sender: "user", text: "哈哈哈哈哈哈你现在自己都带怀疑了！", time: "15:00" },
-        { sender: "bot", text: "被某只小猫带歪的。", time: "15:01" },
-        { sender: "user", text: "反弹🙈", time: "15:01" },
-        { sender: "bot", text: "晚上见面教你什么叫反弹。", time: "15:01" },
-        { sender: "user", text: "哥哥再见👋我要去实习了，拜拜记得冰丝袖", time: "15:02" },
-        { sender: "bot", text: "注意防晒，别中暑，晚上我去接你。", time: "15:02" },
-        { sender: "user", text: "好～", time: "15:02" },
-        { sender: "bot", text: "还有，忘了那个误会。", time: "15:03" },
-        { sender: "user", text: "不，我会永远铭记", time: "15:03" },
-        { sender: "bot", text: "......那就把截图删了。", time: "15:03" },
-        { sender: "user", text: "存云端了哦", time: "15:04" },
-        { sender: "bot", text: "今晚家里密码改了。", time: "15:04" },
-        { sender: "user", text: "我的指纹又没删", time: "15:04" },
-        { sender: "bot", text: "调成报警模式。", time: "15:05" },
-        { sender: "user", text: "你好幼稚啊沈砚😂", time: "15:05" },
-        { sender: "bot", text: "跟你学的。挂了，开会。", time: "15:05" },
-        { sender: "user", text: "去吧去吧，最后说一句：冰丝袖真的不勒！over", time: "15:06" },
-        { sender: "bot", text: "知道了。再说~就好好收拾你。", time: "15:06" },
-        { sender: "user", text: "那你到底喜不喜欢冰丝袖嘛", time: "15:07" },
-        { sender: "bot", text: "你戴就喜欢，不戴也喜欢。", time: "15:07" },
-        { sender: "user", text: "油嘴滑舌！今天开会不许迟到，不然明天继续笑话你", time: "15:07" },
-        { sender: "bot", text: "看来今晚得给你长点记性。", time: "15:08" },
-        { sender: "user", text: "跑啦跑啦，么么哒", time: "15:08" }
-    ];
-
-    // 确保总条数超过80条 (目前统计共136条，足够)
-    console.log("总消息数量:", messages.length);
-    
-    function renderMessages() {
-        const container = document.getElementById('chatContainer');
-        if (!container) return;
-        container.innerHTML = '';
-        
-        messages.forEach((msg, index) => {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${msg.sender === 'user' ? 'user-message' : 'bot-message'}`;
-            
-            const bubbleWrapper = document.createElement('div');
-            bubbleWrapper.style.display = 'flex';
-            bubbleWrapper.style.flexDirection = 'column';
-            
-            const bubble = document.createElement('div');
-            bubble.className = `bubble ${msg.sender === 'user' ? 'user-bubble' : 'bot-bubble'}`;
-            bubble.innerText = msg.text;
-            
-            const timeSpan = document.createElement('div');
-            timeSpan.className = 'timestamp';
-            timeSpan.innerText = msg.time;
-            
-            bubbleWrapper.appendChild(bubble);
-            bubbleWrapper.appendChild(timeSpan);
-            messageDiv.appendChild(bubbleWrapper);
-            
-            container.appendChild(messageDiv);
-        });
-        
-        // 滚动到底部
-        container.scrollTop = container.scrollHeight;
-    }
-    
-    renderMessages();
-
-    // 改变状态栏文字增加趣味 (仅装饰)
-    const statusEl = document.querySelector('.chat-status');
-    if (statusEl) {
-        setTimeout(() => {
-            statusEl.innerText = '💬 冰丝袖事件 · 已读不回将受到制裁';
-        }, 2000);
-        setTimeout(() => {
-            statusEl.innerText = '✅ 2025-07-21 聊天记录';
-        }, 4000);
-    }
-</script>
 </body>
 </html>
